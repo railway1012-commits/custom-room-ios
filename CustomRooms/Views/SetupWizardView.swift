@@ -40,39 +40,34 @@ public struct SetupWizardView: View {
             VStack(spacing: 0) {
                 // Top Header with Step indicator and optional Back button
                 topBar
-                    .padding(.top, 16)
-                    .padding(.horizontal, 24)
+                    .padding(.top, 14)
+                    .padding(.horizontal, 20)
 
-                // Step Content in ScrollView with Keyboard Avoidance
-                ScrollViewReader { proxy in
-                    ScrollView {
-                        VStack(spacing: 24) {
-                            switch currentStep {
-                            case 1:
-                                step1WelcomeView
-                            case 2:
-                                step2AuthView
-                            case 3:
-                                step3GamerIdentityView
-                            case 4:
-                                step4PreferencesView
-                            default:
-                                EmptyView()
-                            }
+                // Step Content in ScrollView with Interactive Keyboard Dismissal
+                ScrollView {
+                    VStack(spacing: 22) {
+                        switch currentStep {
+                        case 1:
+                            step1WelcomeView
+                        case 2:
+                            step2AuthView
+                        case 3:
+                            step3GamerIdentityView
+                        case 4:
+                            step4PreferencesView
+                        default:
+                            EmptyView()
                         }
-                        .padding(.horizontal, 24)
-                        .padding(.top, 20)
-                        .padding(.bottom, 30)
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 16)
+                    .padding(.bottom, 20)
                 }
-
-                Spacer()
-
-                // Persistent Bottom Navigation Area (Consistent Button Placement & Width)
-                bottomActionBar
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 24)
+                .scrollDismissesKeyboard(.interactively)
             }
+        }
+        .safeAreaInset(edge: .bottom) {
+            bottomActionBar
         }
         .onAppear {
             selectedTheme = state.themeMode
@@ -443,24 +438,32 @@ public struct SetupWizardView: View {
         }
     }
 
-    // MARK: - Consistent Bottom Action Bar
+    // MARK: - Consistent Bottom Action Bar (Keyboard-Adaptive)
     private var bottomActionBar: some View {
-        HStack {
-            Spacer()
-            
-            LiquidGlassPillButton(
-                title: actionButtonTitle,
-                systemImage: actionButtonIcon,
-                variant: .primary,
-                isLoading: isAuthLoading,
-                width: 220,
-                height: 50
-            ) {
-                handleNextAction()
+        VStack(spacing: 0) {
+            Divider()
+                .opacity(0.12)
+
+            HStack {
+                Spacer()
+
+                LiquidGlassPillButton(
+                    title: actionButtonTitle,
+                    systemImage: actionButtonIcon,
+                    variant: .primary,
+                    isLoading: isAuthLoading,
+                    width: 220,
+                    height: 50
+                ) {
+                    handleNextAction()
+                }
+
+                Spacer()
             }
-            
-            Spacer()
+            .padding(.top, 12)
+            .padding(.bottom, 14)
         }
+        .background(.ultraThinMaterial)
     }
 
     private var actionButtonTitle: String {

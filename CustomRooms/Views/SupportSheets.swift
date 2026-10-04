@@ -68,8 +68,9 @@ public struct SupportSheetView: View {
                     Button("Close") { dismiss() }.foregroundColor(.secondary)
                 }
             }
-        }
         .presentationDetents([.medium, .large])
+        .presentationBackground(.ultraThinMaterial)
+        .presentationCornerRadius(34)
         .presentationDragIndicator(.visible)
     }
 
@@ -180,8 +181,9 @@ public struct FeedbackSheetView: View {
                     Button("Cancel") { dismiss() }.foregroundColor(.secondary)
                 }
             }
-        }
         .presentationDetents([.medium, .large])
+        .presentationBackground(.ultraThinMaterial)
+        .presentationCornerRadius(34)
         .presentationDragIndicator(.visible)
     }
 }
@@ -246,8 +248,9 @@ public struct DiscordSheetView: View {
                     Button("Close") { dismiss() }.foregroundColor(.secondary)
                 }
             }
-        }
         .presentationDetents([.medium, .large])
+        .presentationBackground(.ultraThinMaterial)
+        .presentationCornerRadius(34)
         .presentationDragIndicator(.visible)
     }
 
@@ -310,6 +313,8 @@ public struct FaqSheetView: View {
             }
         }
         .presentationDetents([.medium, .large])
+        .presentationBackground(.ultraThinMaterial)
+        .presentationCornerRadius(34)
         .presentationDragIndicator(.visible)
     }
 }
@@ -352,6 +357,8 @@ public struct LegalDocSheetView: View {
             }
         }
         .presentationDetents([.medium, .large])
+        .presentationBackground(.ultraThinMaterial)
+        .presentationCornerRadius(34)
         .presentationDragIndicator(.visible)
     }
 

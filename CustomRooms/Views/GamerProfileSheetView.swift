@@ -98,8 +98,9 @@ public struct GamerProfileSheetView: View {
                 squad = state.gamerProfile.defaultSquad
                 discord = state.gamerProfile.defaultDiscord
             }
-        }
         .presentationDetents([.medium, .large])
+        .presentationBackground(.ultraThinMaterial)
+        .presentationCornerRadius(34)
         .presentationDragIndicator(.visible)
     }
 

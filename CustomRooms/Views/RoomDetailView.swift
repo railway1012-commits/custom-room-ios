@@ -16,7 +16,7 @@ public struct RoomDetailView: View {
     public var body: some View {
         NavigationStack {
             ZStack {
-                (colorScheme == .dark ? AppTheme.darkBackground : AppTheme.lightBackground)
+                Color.clear
                     .ignoresSafeArea()
 
                 ScrollView {
@@ -162,6 +162,9 @@ public struct RoomDetailView: View {
                 squad = state.gamerProfile.defaultSquad
             }
         }
+        .presentationBackground(.ultraThinMaterial)
+        .presentationCornerRadius(34)
+        .presentationDragIndicator(.visible)
     }
 
     private func register() {
