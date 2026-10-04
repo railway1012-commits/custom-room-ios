@@ -1,0 +1,26 @@
+name: CustomRooms
+options:
+  bundleIdPrefix: com.customroom
+  deploymentTarget:
+    iOS: "17.0"
+  xcodeVersion: "16.0"
+targets:
+  CustomRooms:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: CustomRooms
+    info:
+      path: CustomRooms/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.customroom.app
+        INFOPLIST_FILE: CustomRooms/Info.plist
+        DEVELOPMENT_TEAM: ""
+        CODE_SIGNING_REQUIRED: "NO"
+        CODE_SIGN_IDENTITY: ""
+        CODE_SIGNING_ALLOWED: "NO"
+        SWIFT_VERSION: "5.10"
+        GENERATE_INFOPLIST_FILE: "NO"
+        TARGETED_DEVICE_FAMILY: "1"
