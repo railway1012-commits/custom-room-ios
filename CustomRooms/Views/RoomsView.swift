@@ -15,8 +15,8 @@ public struct RoomsView: View {
         return state.rooms.filter { room in
             room.title.lowercased().contains(q) ||
             room.mode.lowercased().contains(q) ||
-            room.map.lowercased().contains(q) ||
-            room.status.lowercased().contains(q)
+            room.status.lowercased().contains(q) ||
+            (room.notes?.lowercased().contains(q) ?? false)
         }
     }
 
