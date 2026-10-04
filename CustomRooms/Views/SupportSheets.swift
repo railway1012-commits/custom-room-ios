@@ -68,6 +68,7 @@ public struct SupportSheetView: View {
                     Button("Close") { dismiss() }.foregroundColor(.secondary)
                 }
             }
+        }
         .presentationDetents([.medium, .large])
         .presentationBackground(.ultraThinMaterial)
         .presentationCornerRadius(34)
@@ -181,6 +182,7 @@ public struct FeedbackSheetView: View {
                     Button("Cancel") { dismiss() }.foregroundColor(.secondary)
                 }
             }
+        }
         .presentationDetents([.medium, .large])
         .presentationBackground(.ultraThinMaterial)
         .presentationCornerRadius(34)
@@ -248,6 +250,7 @@ public struct DiscordSheetView: View {
                     Button("Close") { dismiss() }.foregroundColor(.secondary)
                 }
             }
+        }
         .presentationDetents([.medium, .large])
         .presentationBackground(.ultraThinMaterial)
         .presentationCornerRadius(34)

@@ -118,6 +118,7 @@ public struct AuthSheetView: View {
                 // Ensure credentials are cleared upon dismiss so no lingering text remains
                 clearForm()
             }
+        }
         .presentationDetents([.medium, .large])
         .presentationBackground(.ultraThinMaterial)
         .presentationCornerRadius(34)

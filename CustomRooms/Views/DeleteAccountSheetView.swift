@@ -106,6 +106,7 @@ public struct DeleteAccountSheetView: View {
                     .foregroundColor(.secondary)
                 }
             }
+        }
         .presentationDetents([.medium, .large])
         .presentationBackground(.ultraThinMaterial)
         .presentationCornerRadius(34)
