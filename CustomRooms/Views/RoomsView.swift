@@ -2,8 +2,10 @@ import SwiftUI
 
 public struct RoomsView: View {
     @EnvironmentObject var state: AppState
-    @Binding public var selectedRoom: Room?
+    @State private var selectedRoom: Room? = nil
     @Environment(\.colorScheme) var colorScheme
+
+    public init() {}
 
     public var body: some View {
         NavigationStack {
@@ -62,6 +64,9 @@ public struct RoomsView: View {
                     await state.refreshData()
                 }
             }
+        }
+        .sheet(item: $selectedRoom) { room in
+            RoomDetailView(room: room)
         }
     }
 }

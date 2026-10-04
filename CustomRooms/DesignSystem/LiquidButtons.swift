@@ -135,6 +135,16 @@ public struct LiquidGlassSegmentedPicker<T: Hashable>: View {
     @Namespace private var animation
     @Environment(\.colorScheme) var colorScheme
 
+    public init(
+        options: [T],
+        selection: Binding<T>,
+        titleProvider: @escaping (T) -> String = { "\($0)" }
+    ) {
+        self.options = options
+        self._selection = selection
+        self.titleProvider = titleProvider
+    }
+
     public var body: some View {
         HStack(spacing: 4) {
             ForEach(options, id: \.self) { option in
@@ -219,3 +229,13 @@ public struct GoogleSignInButtonView: View {
         .buttonStyle(PlainButtonStyle())
     }
 }
+
+extension LiquidGlassSegmentedPicker where T == Int {
+    public init(options: [String], selectedIndex: Binding<Int>) {
+        self.options = Array(0..<options.count)
+        self._selection = selectedIndex
+        self.titleProvider = { options[$0] }
+    }
+}
+
+public typealias LiquidGlassGoogleButton = GoogleSignInButtonView

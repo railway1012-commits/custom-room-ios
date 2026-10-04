@@ -43,6 +43,17 @@ public extension View {
     func liquidGlassSurface(cornerRadius: CGFloat = 18) -> some View {
         self.modifier(LiquidGlassCardModifier(cornerRadius: cornerRadius, shadowRadius: 6))
     }
+
+    func liquidGlassField() -> some View {
+        self.background {
+            Capsule()
+                .fill(.ultraThinMaterial)
+                .overlay {
+                    Capsule()
+                        .strokeBorder(Color.primary.opacity(0.12), lineWidth: 1.0)
+                }
+        }
+    }
 }
 
 // MARK: - Liquid Pill Text Field

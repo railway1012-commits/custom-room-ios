@@ -33,11 +33,9 @@ public struct AuthSheetView: View {
 
                     // Mode switch
                     LiquidGlassSegmentedPicker(
-                        options: ["Sign In", "Create Account"],
-                        selectedIndex: Binding(
-                            get: { isSignUp ? 1 : 0 },
-                            set: { isSignUp = ($0 == 1) }
-                        )
+                        options: [false, true],
+                        selection: $isSignUp,
+                        titleProvider: { $0 ? "Create Account" : "Sign In" }
                     )
 
                     // Form inputs (All pill shaped)

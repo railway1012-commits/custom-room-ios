@@ -59,6 +59,10 @@ public class DynamicIslandController: ObservableObject {
         post(IslandNotification(type: .info, title: title, message: message))
     }
 
+    public func showNotice(_ title: String, message: String? = nil) {
+        showInfo(title, message: message)
+    }
+
     public func showProcessing(_ title: String, message: String? = nil) {
         post(IslandNotification(type: .processing, title: title, message: message, duration: 0))
     }

@@ -255,11 +255,9 @@ public struct SetupWizardView: View {
 
             // Mode Selector
             LiquidGlassSegmentedPicker(
-                options: ["Sign In", "Create Account"],
-                selectedIndex: Binding(
-                    get: { authMode == .signIn ? 0 : 1 },
-                    set: { authMode = $0 == 0 ? .signIn : .signUp }
-                )
+                options: [AuthMode.signIn, AuthMode.signUp],
+                selection: $authMode,
+                titleProvider: { $0 == .signIn ? "Sign In" : "Create Account" }
             )
 
             VStack(spacing: 14) {
@@ -386,26 +384,15 @@ public struct SetupWizardView: View {
                     .padding(.horizontal, 6)
 
                 LiquidGlassSegmentedPicker(
-                    options: ["Light", "Dark", "System"],
-                    selectedIndex: Binding(
-                        get: {
-                            switch selectedTheme {
-                            case .light: return 0
-                            case .dark: return 1
-                            case .system: return 2
-                            }
-                        },
-                        set: {
-                            let newTheme: AppThemeMode
-                            switch $0 {
-                            case 0: newTheme = .light
-                            case 1: newTheme = .dark
-                            default: newTheme = .system
-                            }
+                    options: [AppThemeMode.light, AppThemeMode.dark, AppThemeMode.system],
+                    selection: Binding(
+                        get: { selectedTheme },
+                        set: { newTheme in
                             selectedTheme = newTheme
                             state.setTheme(newTheme)
                         }
-                    )
+                    ),
+                    titleProvider: { $0.title }
                 )
             }
 
