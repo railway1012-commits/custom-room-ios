@@ -12,6 +12,8 @@ public class AppState: ObservableObject {
     @Published public var hapticsEnabled: Bool
     @Published public var liveSyncEnabled: Bool
     @Published public var isLoading: Bool = false
+    @Published public var isSearchPresented: Bool = false
+    @Published public var searchQuery: String = ""
 
     private let defaults = UserDefaults.standard
 

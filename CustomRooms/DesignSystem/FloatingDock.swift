@@ -37,29 +37,28 @@ public struct LiquidFloatingDockView: View {
     }
 
     public var body: some View {
-        HStack(spacing: 12) {
-            // Main Floating Island Capsule Dock (Matches iOS 18 / 26 Phone App Dock)
-            HStack(spacing: 6) {
+        HStack(spacing: 10) {
+            // Main Floating Island Capsule Bar (Phone Keypad Dock style)
+            HStack(spacing: 4) {
                 ForEach(MainTab.allCases, id: \.self) { tab in
                     let isSelected = selectedTab == tab
 
                     Button(action: {
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.72)) {
+                        withAnimation(.spring(response: 0.32, dampingFraction: 0.75)) {
                             selectedTab = tab
                         }
                         if state.hapticsEnabled {
-                            let haptic = UISelectionFeedbackGenerator()
-                            haptic.selectionChanged()
+                            UISelectionFeedbackGenerator().selectionChanged()
                         }
                     }) {
                         ZStack {
-                            // Active Tab Pill Highlight (Exact match to Keypad highlight in iOS 18 Phone app)
+                            // Active Tab Pill Highlight (Exact match to Keypad highlight in iOS Phone app)
                             if isSelected {
                                 Capsule()
                                     .fill(
                                         colorScheme == .dark
                                             ? Color.white.opacity(0.14)
-                                            : Color.white.opacity(0.95)
+                                            : Color.white
                                     )
                                     .overlay {
                                         Capsule()
@@ -74,51 +73,57 @@ public struct LiquidFloatingDockView: View {
                                         color: colorScheme == .dark
                                             ? Color.black.opacity(0.35)
                                             : Color.black.opacity(0.08),
-                                        radius: 6,
+                                        radius: 4,
                                         x: 0,
                                         y: 2
                                     )
+                                    .frame(width: 76, height: 46)
                                     .matchedGeometryEffect(id: "activeTabCapsule", in: animation)
                             }
 
                             // Tab Icon + Label
-                            VStack(spacing: 3) {
+                            VStack(spacing: 2) {
                                 ZStack(alignment: .topTrailing) {
                                     Image(systemName: tab.icon)
-                                        .font(.system(size: 20, weight: isSelected ? .bold : .medium))
+                                        .font(.system(size: 19, weight: isSelected ? .bold : .medium))
                                         .symbolRenderingMode(.hierarchical)
-                                        .foregroundColor(isSelected ? AppTheme.royalBlue : (colorScheme == .dark ? Color.white.opacity(0.7) : Color.black.opacity(0.6)))
+                                        .foregroundColor(
+                                            isSelected
+                                                ? AppTheme.royalBlue
+                                                : (colorScheme == .dark ? Color.white.opacity(0.65) : Color.black.opacity(0.55))
+                                        )
 
-                                    // Badge on Rooms if live rooms exist (Matches red badge on Calls)
+                                    // Badge on Rooms if live rooms exist
                                     if tab == .rooms && state.rooms.contains(where: { $0.status.lowercased() == "open" || $0.status.lowercased() == "live" }) {
                                         Circle()
                                             .fill(AppTheme.crimsonAlert)
-                                            .frame(width: 8, height: 8)
-                                            .offset(x: 6, y: -2)
+                                            .frame(width: 7, height: 7)
+                                            .offset(x: 5, y: -2)
                                     }
                                 }
-                                .frame(height: 24)
+                                .frame(height: 22)
 
                                 Text(tab.title)
                                     .font(.system(size: 11, weight: isSelected ? .bold : .medium, design: .rounded))
-                                    .foregroundColor(isSelected ? AppTheme.royalBlue : (colorScheme == .dark ? Color.white.opacity(0.65) : Color.black.opacity(0.55)))
+                                    .foregroundColor(
+                                        isSelected
+                                            ? AppTheme.royalBlue
+                                            : (colorScheme == .dark ? Color.white.opacity(0.65) : Color.black.opacity(0.55))
+                                    )
                             }
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 16)
                         }
-                        .frame(minWidth: 78, minHeight: 52)
+                        .frame(width: 76, height: 46)
                         .contentShape(Capsule())
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
             }
-            .padding(5)
+            .padding(.horizontal, 6)
+            .frame(height: 58)
             .background {
-                // Frosted Liquid Glass Dock Background
                 Capsule()
                     .fill(.ultraThinMaterial)
                     .overlay {
-                        // Hairline Specular Border
                         Capsule()
                             .strokeBorder(
                                 LinearGradient(
@@ -133,25 +138,24 @@ public struct LiquidFloatingDockView: View {
                             )
                     }
                     .shadow(
-                        color: colorScheme == .dark ? Color.black.opacity(0.55) : Color.black.opacity(0.14),
-                        radius: 20,
+                        color: colorScheme == .dark ? Color.black.opacity(0.4) : Color.black.opacity(0.12),
+                        radius: 16,
                         x: 0,
-                        y: 8
+                        y: 6
                     )
             }
 
-            // Companion Floating Circular Glass Search/Action Button (Matches circular Search button in iOS Phone app)
+            // Companion Floating Circular Glass Search Button (Matches Search circle in Phone app)
             Button(action: {
                 if state.hapticsEnabled {
-                    let haptic = UIImpactFeedbackGenerator(style: .medium)
-                    haptic.impactOccurred()
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 }
                 if let onSearchTapped = onSearchTapped {
                     onSearchTapped()
                 } else {
-                    Task {
-                        await state.refreshData()
-                        DynamicIslandController.shared.showSuccess("Refreshed Scrim Rooms")
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                        selectedTab = .rooms
+                        state.isSearchPresented.toggle()
                     }
                 }
             }) {
@@ -173,20 +177,25 @@ public struct LiquidFloatingDockView: View {
                                 )
                         }
                         .shadow(
-                            color: colorScheme == .dark ? Color.black.opacity(0.55) : Color.black.opacity(0.14),
-                            radius: 20,
+                            color: colorScheme == .dark ? Color.black.opacity(0.4) : Color.black.opacity(0.12),
+                            radius: 16,
                             x: 0,
-                            y: 8
+                            y: 6
                         )
 
-                    Image(systemName: "arrow.clockwise")
-                        .font(.system(size: 17, weight: .bold))
-                        .foregroundColor(colorScheme == .dark ? .white : .primary)
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 19, weight: .semibold))
+                        .foregroundColor(
+                            state.isSearchPresented
+                                ? AppTheme.royalBlue
+                                : (colorScheme == .dark ? .white : .primary)
+                        )
                 }
                 .frame(width: 58, height: 58)
+                .contentShape(Circle())
             }
             .buttonStyle(PlainButtonStyle())
         }
-        .padding(.horizontal, 16)
+        .frame(height: 58)
     }
 }

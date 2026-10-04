@@ -7,6 +7,19 @@ public struct RoomsView: View {
 
     public init() {}
 
+    private var filteredRooms: [Room] {
+        if state.searchQuery.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return state.rooms
+        }
+        let q = state.searchQuery.lowercased()
+        return state.rooms.filter { room in
+            room.title.lowercased().contains(q) ||
+            room.mode.lowercased().contains(q) ||
+            room.map.lowercased().contains(q) ||
+            room.status.lowercased().contains(q)
+        }
+    }
+
     public var body: some View {
         NavigationStack {
             ZStack {
@@ -31,6 +44,44 @@ public struct RoomsView: View {
                         .padding(.horizontal, 20)
                         .padding(.top, 10)
 
+                        // Interactive Liquid Glass Search Bar
+                        if state.isSearchPresented {
+                            HStack(spacing: 10) {
+                                Image(systemName: "magnifyingglass")
+                                    .foregroundColor(AppTheme.royalBlue)
+                                    .font(.system(size: 15, weight: .semibold))
+
+                                TextField("Search scrims, maps, modes...", text: $state.searchQuery)
+                                    .font(.system(size: 15))
+                                    .textFieldStyle(.plain)
+
+                                if !state.searchQuery.isEmpty {
+                                    Button(action: { state.searchQuery = "" }) {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.secondary)
+                                            .font(.system(size: 15))
+                                    }
+                                }
+                            }
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 10)
+                            .background {
+                                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                    .fill(.ultraThinMaterial)
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                            .strokeBorder(
+                                                colorScheme == .dark
+                                                    ? Color.white.opacity(0.15)
+                                                    : Color.black.opacity(0.08),
+                                                lineWidth: 0.75
+                                            )
+                                    }
+                            }
+                            .padding(.horizontal, 20)
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                        }
+
                         if state.rooms.isEmpty && state.isLoading {
                             ProgressView()
                                 .padding(.top, 40)
@@ -46,9 +97,21 @@ public struct RoomsView: View {
                                     .foregroundColor(.secondary)
                             }
                             .padding(.top, 60)
+                        } else if filteredRooms.isEmpty {
+                            VStack(spacing: 12) {
+                                Image(systemName: "magnifyingglass")
+                                    .font(.system(size: 36))
+                                    .foregroundColor(.secondary)
+                                Text("No Matching Rooms")
+                                    .font(.system(size: 16, weight: .semibold))
+                                Text("Try searching with different keywords.")
+                                    .font(.system(size: 13))
+                                    .foregroundColor(.secondary)
+                            }
+                            .padding(.top, 40)
                         } else {
                             LazyVStack(spacing: 14) {
-                                ForEach(state.rooms) { room in
+                                ForEach(filteredRooms) { room in
                                     RoomCardView(room: room, signups: state.signups.filter { $0.roomId == room.id }) {
                                         selectedRoom = room
                                     }

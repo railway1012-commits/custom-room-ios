@@ -36,13 +36,13 @@ public struct MainTabView: View {
             .ignoresSafeArea(edges: .top)
 
             // Floating Liquid Glass Dock (Bottom Z-Index)
-            VStack {
+            VStack(spacing: 0) {
                 Spacer()
                 LiquidFloatingDockView(selectedTab: $selectedTab)
-                    .padding(.bottom, 12)
+                    .padding(.bottom, 6)
             }
             .zIndex(100)
-            .ignoresSafeArea(edges: .bottom)
+            .ignoresSafeArea(.keyboard)
         }
         // First-time setup wizard presentation (Only if not completed)
         .fullScreenCover(isPresented: Binding(
