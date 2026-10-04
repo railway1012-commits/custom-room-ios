@@ -18,9 +18,9 @@ public struct MainTabView: View {
                 switch selectedTab {
                 case .rooms:
                     RoomsView()
-                case .dashboard:
+                case .matches:
                     DashboardView()
-                case .settings:
+                case .me:
                     MeSettingsView(selectedTab: $selectedTab)
                 }
             }
